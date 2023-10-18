@@ -27,13 +27,17 @@ RDS database(MySql)
 ## Components that are used to protect the application:
 - High Availability: Multi AZ subnets(availability zones), Application Loadbalancer(ALB), Autoscaling group(ASG) and Secondary RDS database(read replica).
 - Identity and Access Management (IAM): IAM roles, EC2 iam instance profile, resource based policy.
-- Network Security: Security Groups attached to ALB , App server and RDS database.
+- Network Security: Security Groups(ACLs) attached to ALB , App server and RDS database.
   WAF(Web application firewall): This service used to protect against the application based threats(web/database) based on aws managed rules and core rule sets.
 - Encryption: KMS encryption configured to encrypt the RDS database using CMK. and ALB access logs using default key.
 - Data Protection: Secondary RDS database(read replica).
   DB backup: By default, AWS has automatic backups enabled for RDS databases. Additionally, I use AWS Backup as an additional service.
 - Logging and Monitoring solution: Cloudwatch logging and application monitoring by using the CW agent on app-server.
   
+## Networking
+- Internet gateway used to provide inbound connectivity from internet to app servers.
+- Nat gateway used to provide outbound internet connectivity for app servers.
+- Route tables and security groups(ACLs) to provide restricted connectivity. 
 
 ## Initialise the terraform with following commands:
 ```terraform init```
