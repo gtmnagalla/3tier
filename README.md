@@ -18,7 +18,6 @@ The following resources will be created:
 11. Systems manager, parameter store.
 12. AWS backup
 
-Note: 
 
 ## Installed applications:
 App Server/EC2( apache, php application and cloudwatch agent)
