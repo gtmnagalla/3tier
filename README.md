@@ -47,8 +47,7 @@ RDS database(MySql)
 - ```terraform apply```
 
 - for rollback and delete changes
-
-- ```terraform delete``` 
+```terraform delete``` 
 
 
 ### Once the installation is completed, copy the RDS endpoint name and add it to the myphpadmin configuration file on the app server as follows.
