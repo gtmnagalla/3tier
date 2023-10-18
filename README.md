@@ -46,7 +46,7 @@ RDS database(MySql)
 
 - ```terraform apply```
 
-- ```terraform delete``` delete changes
+- ```terraform destroy``` delete changes
 
 
 ### Once the installation is completed, copy the RDS endpoint name and add it to the myphpadmin configuration file on the app server as follows.
