@@ -1,4 +1,4 @@
-# Create VPC CIDR: 10.1.0.0/16
+# Create VPC CIDR: 10.0.0.0/16
 resource "aws_vpc" "app-vpc" {
     cidr_block       = "10.1.0.0/16"
     instance_tenancy = "default"
