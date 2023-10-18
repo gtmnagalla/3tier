@@ -5,22 +5,28 @@ set -e
 exec > >(tee /var/log/user-data.log|logger -t user-data-extra -s 2>/dev/console) 2>&1
 
 # Make sure we have all the latest updates when we launch this instance
-yum update -y
-yum upgrade -y
-sleep 150
+dnf update -y
 
 # Install php application and Configure httpd service
-amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
-yum install -y httpd
-systemctl start httpd
-systemctl enable httpd.service
+dnf install -y httpd wget php-fpm php-mysqli php-json php php-devel
 echo "Hello World from $(hostname -f)" > /var/www/html/index.html
 
+systemctl start httpd
+systemctl enable httpd
+
+# Set file permissions
 usermod -a -G apache ec2-user
 chown -R ec2-user:apache /var/www
 chmod 2775 /var/www && find /var/www -type d -exec chmod 2775 {} \;
 find /var/www -type f -exec chmod 0664 {} \;
 
+# Create php file in the apache root
+echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+
+# Delete the phpinfo.php file
+rm /var/www/html/phpinfo.php
+
+# Install php Myadmin
 yum install php-mbstring php-xml -y
 systemctl restart httpd
 systemctl restart php-fpm
