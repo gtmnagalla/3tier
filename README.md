@@ -17,6 +17,8 @@ The following resources will be created:
 11. Systems manager, parameter store.
 12. AWS backup
 
+Note: By default, AWS has automatic backups enabled for RDS databases. Additionally, I use AWS Backup as an additional service.
+
 ## Initialise the terraform with following commands:
 ```terraform init```
 
