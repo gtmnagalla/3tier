@@ -1,3 +1,5 @@
+### The user-data script below installs PHP, Apache application, and the CloudWatch agent on the app server (EC2 instance). ###
+
 #! /bin/bash
 set -e
 
