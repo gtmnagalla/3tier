@@ -18,7 +18,7 @@ The following resources will be created:
 12. AWS backup
 
 ## Initialise the terraform with following commands:
-''' terraform init '''
+'terraform init '
 
 '''terraform plan'''
 
