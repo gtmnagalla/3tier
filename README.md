@@ -17,4 +17,9 @@ The following resources will be created:
 11. Systems manager, parameter store.
 12. AWS backup
 
-   
+## Initialise the terraform with following commands.
+'''terraform init'''
+
+'''terraform plan'''
+
+'''terraform apply --auto-approve'''
