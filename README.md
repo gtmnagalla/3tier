@@ -28,7 +28,7 @@ RDS database(MySql)
 - High Availability: Multi AZ subnets(availability zones), Application Loadbalancer(ALB), Autoscaling group(ASG) and Secondary RDS database(read replica).
 - Identity and Access Management (IAM): IAM roles, EC2 iam instance profile, resource based policy.
 - Network Security: Security Groups(ACLs) attached to ALB , App server and RDS database.
-  > WAF(Web application firewall): This service used to protect against the application based threats(web/database) based on aws managed rules and core rule sets.
+WAF(Web application firewall): This service used to protect against the application based threats(web/database) based on aws managed rules and core rule sets.
 - Encryption: KMS encryption configured to encrypt the RDS database using CMK. and ALB access logs using default key.
 - Data Protection: Secondary RDS database(read replica).
   DB backup: By default, AWS has automatic backups enabled for RDS databases. Additionally, I use AWS Backup as an additional service.
