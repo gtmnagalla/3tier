@@ -1,5 +1,6 @@
 # Create App server configuration
 
+# local values assigned to ec2 userdata files
 locals {
   userdata = templatefile("data.sh", {
     ssm_cloudwatch_config = aws_ssm_parameter.cw_agent.name
