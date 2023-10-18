@@ -44,7 +44,7 @@ RDS database(MySql)
 
 ```terraform plan```
 
-```terraform apply --auto-approve```
+```terraform apply```
 
 ### Once the installation is completed, copy the RDS endpoint name and add it to the myphpadmin configuration file on the app server as follows.
  ![image](https://github.com/gtmnagalla/3tier/assets/85630305/49639e4b-ea48-4a5c-8822-e607e7677d77)
