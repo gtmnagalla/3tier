@@ -39,7 +39,7 @@ RDS database(MySql)
 - Nat gateway used to provide outbound internet connectivity for app servers.
 - Route tables and security groups(ACLs) to provide restricted connectivity. 
 
-## Initialise the terraform with following commands:
+### Initialise the terraform with following commands:
 ```terraform init```
 
 ```terraform plan```
