@@ -32,7 +32,7 @@ RDS database(MySql)
 - Encryption: KMS encryption configured to encrypt the RDS database using CMK. and ALB access logs using default key.
 - Data Protection: Secondary RDS database(read replica).
   DB backup: By default, AWS has automatic backups enabled for RDS databases. Additionally, I use AWS Backup as an additional service.
-- Logging and Monitoring solution: Cloudwatch logging and application monitoring using the CW agent on app-server.
+- Logging and Monitoring solution: Cloudwatch logging and application monitoring by using the CW agent on app-server.
   
 
 ## Initialise the terraform with following commands:
