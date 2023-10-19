@@ -49,10 +49,10 @@ resource "aws_lb" "app-alb" {
 # alb listener
 resource "aws_lb_listener" "alb-list" {
   load_balancer_arn = aws_lb.app-alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"  # New ssl certificate
+  port              = "80"                   # "443" more secure option
+  protocol          = "HTTP"                 # "HTTPS"
+  # ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  # certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"  # New ssl certificate
 
   default_action {
     type             = "forward"
