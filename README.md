@@ -39,6 +39,22 @@ RDS database(MySql)
 - Nat gateway used to provide outbound internet connectivity for app servers.
 - Route tables and security groups(ACLs) to provide restricted connectivity. 
 
+## Environment vaiables in the Linux environment.
+To configure AWS access and secret keys as environment variables in a Linux environment and use them in your Terraform provider configuration, follow these steps:
+
+Open your shell environment configuration file. This file may vary depending on the shell you're using (e.g., Bash, Zsh, etc.). Common configuration files include ~/.bashrc or ~/.bash_profile for Bash users and ~/.zshrc for Zsh users. You can use a text editor to edit this file.
+
+Add the following lines to set your AWS access and secret keys as environment variables. Replace YOUR_ACCESS_KEY and YOUR_SECRET_KEY with your actual AWS credentials.
+```
+export AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
+export AWS_SECRET_ACCESS_KEY=YOUR_SECRET_KEY
+```
+Save and exit the configuration file.
+Reload your shell environment to apply the changes.
+```
+source ~/.bashrc  # Replace with the actual configuration file you edited
+```
+
 ## Initialise the terraform with following commands:
 - ```terraform init```
 
