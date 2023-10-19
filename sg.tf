@@ -7,7 +7,7 @@ resource "aws_security_group" "alb-sg" {
     vpc_id      = aws_vpc.app-vpc.id
 
     ingress {
-        description      = "TLS from VPC"
+        description      = "HTTP"
         from_port        = 80         # 443
         to_port          = 80          # 443
         protocol         = "tcp"
