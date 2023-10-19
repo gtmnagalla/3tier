@@ -2,14 +2,14 @@
 
 # Create ALB Security Group
 resource "aws_security_group" "alb-sg" {
-    name        = "allow_tls"
-    description = "Allow TLS inbound traffic"
+    name        = "allow_HTTP"    # "HTTPS" more secure option
+    description = "Allow HTTP inbound traffic from internet"  
     vpc_id      = aws_vpc.app-vpc.id
 
     ingress {
         description      = "TLS from VPC"
-        from_port        = 443
-        to_port          = 443
+        from_port        = 80         # 443
+        to_port          = 80          # 443
         protocol         = "tcp"
         cidr_blocks      = ["0.0.0.0/0"]
     }
