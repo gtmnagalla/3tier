@@ -1,7 +1,54 @@
-# Create an S3 bucket for storing logs of all components
+# Create an S3 bucket for storing ALB logs
 resource "aws_s3_bucket" "mybucket" {
-    bucket = "3tier-bucket-logs" 
+    bucket        = "3tier-bucket-logs"
+    force_destroy = true
 }
+
+resource "aws_s3_bucket_policy" "mybucket_policy" {
+  bucket = aws_s3_bucket.mybucket.bucket
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::127311923021:root"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "${aws_s3_bucket.mybucket.arn}/*"
+    }
+  ]
+}
+POLICY
+}
+
+
+
+/*
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "logdelivery.elasticloadbalancing.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "${aws_s3_bucket.mybucket.arn}/*",
+      "Condition": {
+        "StringEquals": {
+          "s3:x-amz-acl": "bucket-owner-full-control"
+        }
+      }
+    }
+  ]
+}
+*/
+
+/*
+
 
 # enable server side encryption. default: aws/s3
 resource "aws_s3_bucket_server_side_encryption_configuration" "encry-bucket" {
@@ -28,3 +75,5 @@ resource "aws_s3_bucket_acl" "bucket-acl" {
     acl    = "private"
     depends_on = [aws_s3_bucket_ownership_controls.bucket-owner]
 }
+'''
+*/

@@ -1,6 +1,5 @@
 # Create App server configuration
 
-# local values assigned to ec2 userdata files
 locals {
   userdata = templatefile("data.sh", {
     ssm_cloudwatch_config = aws_ssm_parameter.cw_agent.name
@@ -13,13 +12,13 @@ resource "aws_launch_template" "ec2_template" {
 
     # Specify instance settings
     instance_type = "t3.micro"
-    image_id      = "ami-080c09858e04800a1"  # Amazon Linux AMI ID
-    security_group_names = [aws_security_group.app-sg.id]
+    image_id      = "ami-05c13eab67c5d8861"  # Amazon Linux AMI ID
+    vpc_security_group_ids = [aws_security_group.app-sg.id]
     iam_instance_profile {
         name = aws_iam_instance_profile.app.name  # configure instance profile
     }
 
-    user_data = local.userdata  #user data from the local variables
+    user_data = base64encode(local.userdata)  #user data from the local variables
 
     tag_specifications {
         resource_type = "instance"
@@ -32,11 +31,13 @@ resource "aws_launch_template" "ec2_template" {
 
 # Create Autoscaling group
 resource "aws_autoscaling_group" "app-asg" {
+    name                 = "my-app"
     vpc_zone_identifier  = [aws_subnet.subnet-app-1a.id, aws_subnet.subnet-app-1b.id]
-    target_group_arns = [aws_lb_target_group.alb-tg.arn]
-    desired_capacity   = 2
-    max_size           = 2
-    min_size           = 2
+    target_group_arns    = [aws_lb_target_group.alb-tg.arn]
+    desired_capacity     = 2
+    max_size             = 2
+    min_size             = 2
+    health_check_type    = "EC2"
 
     launch_template {
         id      = aws_launch_template.ec2_template.id

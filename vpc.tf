@@ -1,6 +1,6 @@
 # Create VPC CIDR: 10.0.0.0/16
 resource "aws_vpc" "app-vpc" {
-    cidr_block       = "10.1.0.0/16"
+    cidr_block       = "10.0.0.0/16"
     instance_tenancy = "default"
     enable_dns_hostnames = "true"
 
@@ -75,13 +75,13 @@ resource "aws_internet_gateway" "igw" {
     vpc_id = aws_vpc.app-vpc.id
 }
 
-resource "aws_internet_gateway_attachment" "igw-attach" {
-    internet_gateway_id = aws_internet_gateway.igw.id
-    vpc_id              = aws_vpc.app-vpc.id
+
+# Create elastic ips
+resource "aws_eip" "eip1" {
+  domain   = "vpc"
 }
 
-# Create elastic ip
-resource "aws_eip" "eip1" {
+resource "aws_eip" "eip2" {
   domain   = "vpc"
 }
 
@@ -94,11 +94,20 @@ resource "aws_nat_gateway" "ngw-1a" {
         Name = "gw NAT az1"
     }
 
-  depends_on = [aws_internet_gateway.igw]
+}
+
+resource "aws_nat_gateway" "ngw-1b" {
+    allocation_id = aws_eip.eip2.id
+    subnet_id     = aws_subnet.subnet-web-1b.id
+
+    tags = {
+        Name = "gw NAT az2"
+    }
+
 }
 
 ## Create route tables for public subnet , app and db subnets ##
-# Public subnet
+# Public subnet route table
 resource "aws_route_table" "web-rtb" {
     vpc_id = aws_vpc.app-vpc.id
 
@@ -112,8 +121,8 @@ resource "aws_route_table" "web-rtb" {
     }
 }
 
-# App subnet
-resource "aws_route_table" "app-rtb" {
+# App subnet route tables
+resource "aws_route_table" "app-rtb1" {
     vpc_id = aws_vpc.app-vpc.id
 
     route {
@@ -122,21 +131,42 @@ resource "aws_route_table" "app-rtb" {
     }
 
     tags = {
-        Name = "app routetable"
+        Name = "app routetable1"
+    }
+}
+
+resource "aws_route_table" "app-rtb2" {
+    vpc_id = aws_vpc.app-vpc.id
+
+    route {
+        cidr_block = "0.0.0.0/0"
+        nat_gateway_id = aws_nat_gateway.ngw-1b.id
+    }
+
+    tags = {
+        Name = "app routetable2"
     }
 }
 
 # DB subnet
-resource "aws_route_table" "db-rtb" {
+resource "aws_route_table" "db-rtb1" {
     vpc_id = aws_vpc.app-vpc.id
 
     tags = {
-        Name = "db-rtb"
+        Name = "db-rtb1"
+    }
+}
+
+resource "aws_route_table" "db-rtb2" {
+    vpc_id = aws_vpc.app-vpc.id
+
+    tags = {
+        Name = "db-rtb2"
     }
 }
 
 # Create route table associations
-# web subnet and web route table
+# web subnet and web route table association
 resource "aws_route_table_association" "rta-web-1a" {
     subnet_id      = aws_subnet.subnet-web-1a.id
     route_table_id = aws_route_table.web-rtb.id
@@ -146,22 +176,22 @@ resource "aws_route_table_association" "rta-web-1b" {
     route_table_id = aws_route_table.web-rtb.id
 }
 
-# app subnet and app route table
+# app subnet and app route table association
 resource "aws_route_table_association" "rta-app-1a" {
     subnet_id      = aws_subnet.subnet-app-1a.id
-    route_table_id = aws_route_table.app-rtb.id
+    route_table_id = aws_route_table.app-rtb1.id
 }
 resource "aws_route_table_association" "rta-app-1b" {
     subnet_id      = aws_subnet.subnet-app-1b.id
-    route_table_id = aws_route_table.app-rtb.id
+    route_table_id = aws_route_table.app-rtb2.id
 }
 
-# db subnet and db route table
+# db subnet and db route table association
 resource "aws_route_table_association" "rta-db-1a" {
     subnet_id      = aws_subnet.subnet-db-1a.id
-    route_table_id = aws_route_table.db-rtb.id
+    route_table_id = aws_route_table.db-rtb1.id
 }
 resource "aws_route_table_association" "rta-db-1b" {
     subnet_id      = aws_subnet.subnet-db-1b.id
-    route_table_id = aws_route_table.db-rtb.id
+    route_table_id = aws_route_table.db-rtb2.id
 }
